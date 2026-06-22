@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Single Player – Hangman Party 🎉</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="game-body">
+
+  <div class="bg-shapes">
+    <div class="shape s1">🎈</div><div class="shape s3">⭐</div>
+    <div class="shape s5">🎉</div><div class="shape s7">✨</div>
+  </div>
+
+  <!-- SCREEN 1: Category Selection -->
+  <div id="screen-category" class="screen active">
+    <div class="screen-inner">
+      <a href="index.html" class="back-btn">← Home</a>
+      <h2 class="screen-title">Pick a Category 🎯</h2>
+      <p class="screen-sub">Choose what kind of words you want to guess!</p>
+      <div class="category-grid" id="categoryGrid"></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Game Screen -->
+  <div id="screen-game" class="screen">
+    <div class="screen-inner game-layout">
+
+      <div class="game-top-bar">
+        <a href="index.html" class="back-btn">← Home</a>
+        <div class="category-badge" id="categoryBadge"></div>
+        <div class="score-area">
+          <span class="score-label">Score</span>
+          <span class="score-value" id="scoreDisplay">0</span>
+        </div>
+      </div>
+
+      <div class="game-main">
+        <!-- Hangman Drawing -->
+        <div class="hangman-area">
+          <svg id="hangmanSVG" viewBox="0 0 200 250" width="200" height="250">
+            <!-- Gallows (always visible) -->
+            <line x1="20" y1="245" x2="180" y2="245" stroke="#5F4ABB" stroke-width="8" stroke-linecap="round"/>
+            <line x1="60" y1="245" x2="60" y2="20" stroke="#5F4ABB" stroke-width="8" stroke-linecap="round"/>
+            <line x1="60" y1="20" x2="140" y2="20" stroke="#5F4ABB" stroke-width="8" stroke-linecap="round"/>
+            <line x1="140" y1="20" x2="140" y2="50" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round"/>
+            <!-- Body parts (shown on wrong guesses) -->
+            <circle id="h-head" cx="140" cy="68" r="18" fill="#FFD93D" stroke="#5F4ABB" stroke-width="4" class="h-part hidden"/>
+            <line id="h-body" x1="140" y1="86" x2="140" y2="150" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round" class="h-part hidden"/>
+            <line id="h-larm" x1="140" y1="105" x2="110" y2="135" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round" class="h-part hidden"/>
+            <line id="h-rarm" x1="140" y1="105" x2="170" y2="135" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round" class="h-part hidden"/>
+            <line id="h-lleg" x1="140" y1="150" x2="115" y2="190" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round" class="h-part hidden"/>
+            <line id="h-rleg" x1="140" y1="150" x2="165" y2="190" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round" class="h-part hidden"/>
+            <!-- Face (shown when head is visible, revealed on lose) -->
+            <circle id="h-eye1" cx="134" cy="65" r="2.5" fill="#5F4ABB" class="h-face hidden"/>
+            <circle id="h-eye2" cx="146" cy="65" r="2.5" fill="#5F4ABB" class="h-face hidden"/>
+            <path id="h-mouth" d="M134 74 Q140 79 146 74" stroke="#5F4ABB" stroke-width="2" fill="none" stroke-linecap="round" class="h-face hidden"/>
+            <!-- Sad face on lose -->
+            <path id="h-sad" d="M134 77 Q140 72 146 77" stroke="#E74C3C" stroke-width="2" fill="none" stroke-linecap="round" class="h-lose hidden"/>
+            <circle id="h-eye1x" cx="133" cy="64" r="3.5" fill="#E74C3C" class="h-lose hidden"/>
+            <circle id="h-eye2x" cx="147" cy="64" r="3.5" fill="#E74C3C" class="h-lose hidden"/>
+            <line x1="131" y1="62" x2="135" y2="66" stroke="white" stroke-width="1.5" class="h-lose hidden" id="xl1"/>
+            <line x1="135" y1="62" x2="131" y2="66" stroke="white" stroke-width="1.5" class="h-lose hidden" id="xl2"/>
+            <line x1="145" y1="62" x2="149" y2="66" stroke="white" stroke-width="1.5" class="h-lose hidden" id="xl3"/>
+            <line x1="149" y1="62" x2="145" y2="66" stroke="white" stroke-width="1.5" class="h-lose hidden" id="xl4"/>
+          </svg>
+
+          <div class="wrong-count">
+            ❌ <span id="wrongCount">0</span> / 6 wrong guesses
+          </div>
+        </div>
+
+        <!-- Word + Hint Area -->
+        <div class="word-area">
+          <div class="hint-box" id="hintBox">
+            <span class="hint-icon">💡</span>
+            <span id="hintText">Click the hint button for a clue!</span>
+          </div>
+
+          <div class="word-display" id="wordDisplay"></div>
+
+          <div class="word-meta">
+            <span id="wordLength"></span>
+          </div>
+
+          <div class="hint-controls">
+            <button class="hint-btn" id="hintBtn" onclick="useHint()">
+              💡 Hint <span class="hint-count" id="hintCount">(3 left)</span>
+            </button>
+            <button class="new-word-btn" onclick="newWord()">🔄 New Word</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keyboard -->
+      <div class="keyboard" id="keyboard"></div>
+
+    </div>
+  </div>
+
+  <!-- WIN OVERLAY -->
+  <div id="winOverlay" class="overlay hidden">
+    <div class="overlay-box win-box">
+      <div class="overlay-emoji">🎉</div>
+      <h2>You Won!</h2>
+      <p id="winWordReveal"></p>
+      <p class="win-score">+10 points added!</p>
+      <div class="overlay-btns">
+        <button onclick="newWord()" class="btn-play-again">🔄 Play Again</button>
+        <a href="index.html" class="btn-home">🏠 Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOSE OVERLAY -->
+  <div id="loseOverlay" class="overlay hidden">
+    <div class="overlay-box lose-box">
+      <div class="overlay-emoji">😵</div>
+      <h2>Game Over!</h2>
+      <p>The word was: <strong id="loseWordReveal"></strong></p>
+      <p id="loseHintReveal" class="lose-hint"></p>
+      <div class="overlay-btns">
+        <button onclick="newWord()" class="btn-play-again">🔄 Try Again</button>
+        <a href="index.html" class="btn-home">🏠 Home</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="words.js"></script>
+  <script src="game.js"></script>
+  <script>
+    initSinglePlayer();
+  </script>
+</body>
+</html>

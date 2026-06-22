@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hangman Party 🎉</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="home-body">
+
+  <!-- Floating background shapes -->
+  <div class="bg-shapes">
+    <div class="shape s1">🎈</div>
+    <div class="shape s2">⭐</div>
+    <div class="shape s3">🎉</div>
+    <div class="shape s4">🌈</div>
+    <div class="shape s5">🎊</div>
+    <div class="shape s6">✨</div>
+    <div class="shape s7">🎈</div>
+    <div class="shape s8">⭐</div>
+  </div>
+
+  <div class="home-container">
+    <!-- Logo / Title -->
+    <div class="logo-area">
+      <div class="hangman-logo">
+        <svg viewBox="0 0 120 160" width="120" height="160">
+          <!-- Gallows -->
+          <line x1="10" y1="155" x2="110" y2="155" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round"/>
+          <line x1="35" y1="155" x2="35" y2="10" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round"/>
+          <line x1="35" y1="10" x2="80" y2="10" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round"/>
+          <line x1="80" y1="10" x2="80" y2="30" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round"/>
+          <!-- Smiley man -->
+          <circle cx="80" cy="42" r="13" fill="#FFD93D" stroke="#5F4ABB" stroke-width="3"/>
+          <circle cx="75" cy="40" r="2" fill="#5F4ABB"/>
+          <circle cx="85" cy="40" r="2" fill="#5F4ABB"/>
+          <path d="M75 47 Q80 52 85 47" stroke="#5F4ABB" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Body -->
+          <line x1="80" y1="55" x2="80" y2="100" stroke="#5F4ABB" stroke-width="5" stroke-linecap="round"/>
+          <line x1="80" y1="68" x2="60" y2="85" stroke="#5F4ABB" stroke-width="5" stroke-linecap="round"/>
+          <line x1="80" y1="68" x2="100" y2="85" stroke="#5F4ABB" stroke-width="5" stroke-linecap="round"/>
+          <line x1="80" y1="100" x2="62" y2="125" stroke="#5F4ABB" stroke-width="5" stroke-linecap="round"/>
+          <line x1="80" y1="100" x2="98" y2="125" stroke="#5F4ABB" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h1 class="game-title">Hangman<span class="title-party"> Party!</span></h1>
+      <p class="game-subtitle">Guess the word before the man falls! 🎮</p>
+    </div>
+
+    <!-- Mode Selection -->
+    <div class="mode-cards">
+      <a href="singleplayer.html" class="mode-card card-single">
+        <div class="card-emoji">🧍</div>
+        <h2>Single Player</h2>
+        <p>Play against the computer! Pick a category, get a hint, and guess the word.</p>
+        <div class="card-btn">Play Now →</div>
+      </a>
+
+      <a href="multiplayer.html" class="mode-card card-multi">
+        <div class="card-emoji">👥</div>
+        <h2>Two Players</h2>
+        <p>Player 1 sets a secret word — by typing or speaking it. Player 2 must guess!</p>
+        <div class="card-btn">Play Now →</div>
+      </a>
+    </div>
+
+    <!-- How to play -->
+    <div class="how-to-play">
+      <h3>How to Play</h3>
+      <div class="steps">
+        <div class="step"><span class="step-num">1</span><p>Choose a game mode above</p></div>
+        <div class="step"><span class="step-num">2</span><p>Click letters to guess the word</p></div>
+        <div class="step"><span class="step-num">3</span><p>Too many wrong guesses = game over!</p></div>
+        <div class="step"><span class="step-num">4</span><p>Use hints wisely — only 3 allowed!</p></div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Two Players – Hangman Party 🎉</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="game-body">
+
+  <div class="bg-shapes">
+    <div class="shape s2">🎈</div><div class="shape s4">⭐</div>
+    <div class="shape s6">🎉</div><div class="shape s8">✨</div>
+  </div>
+
+  <!-- SCREEN 1: Player 1 sets a word -->
+  <div id="screen-setup" class="screen active">
+    <div class="screen-inner setup-layout">
+      <a href="index.html" class="back-btn">← Home</a>
+      <div class="player-badge p1-badge">👑 Player 1's Turn</div>
+      <h2 class="screen-title">Set the Secret Word</h2>
+      <p class="screen-sub">Player 2, look away! Player 1 will enter or speak the secret word.</p>
+
+      <div class="setup-card">
+        <!-- Category picker -->
+        <div class="setup-section">
+          <label class="setup-label">📂 Choose a Category (optional)</label>
+          <div class="mini-category-grid" id="miniCategoryGrid"></div>
+        </div>
+
+        <!-- Text input -->
+        <div class="setup-section">
+          <label class="setup-label">⌨️ Type the secret word</label>
+          <div class="word-input-row">
+            <input type="password" id="secretWordInput" placeholder="Type secret word here..." class="secret-input" maxlength="20"/>
+            <button class="reveal-btn" id="revealBtn" onmousedown="showWord()" onmouseup="hideWord()" ontouchstart="showWord()" ontouchend="hideWord()">👁</button>
+          </div>
+          <input type="text" id="hintInput" placeholder="Enter a hint (optional)..." class="hint-input"/>
+        </div>
+
+        <!-- OR divider -->
+        <div class="or-divider"><span>OR</span></div>
+
+        <!-- Voice input -->
+        <div class="setup-section">
+          <label class="setup-label">🎤 Speak the secret word</label>
+          <div class="voice-area">
+            <button class="mic-btn" id="micBtn" onclick="startVoiceInput()">
+              🎤 Press to Speak
+            </button>
+            <div class="voice-status" id="voiceStatus">Microphone ready</div>
+            <div class="voice-result" id="voiceResult"></div>
+          </div>
+        </div>
+
+        <button class="start-game-btn" onclick="startMultiGame()">
+          🎮 Start Game – Player 2's Turn!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Game Screen (same as single player) -->
+  <div id="screen-game" class="screen">
+    <div class="screen-inner game-layout">
+
+      <div class="game-top-bar">
+        <a href="multiplayer.html" class="back-btn">← Reset</a>
+        <div class="category-badge" id="categoryBadge">👥 Two Player</div>
+        <div class="player-badge p2-badge">🎮 Player 2 Guessing</div>
+      </div>
+
+      <div class="game-main">
+        <!-- Hangman Drawing -->
+        <div class="hangman-area">
+          <svg id="hangmanSVG" viewBox="0 0 200 250" width="200" height="250">
+            <line x1="20" y1="245" x2="180" y2="245" stroke="#5F4ABB" stroke-width="8" stroke-linecap="round"/>
+            <line x1="60" y1="245" x2="60" y2="20" stroke="#5F4ABB" stroke-width="8" stroke-linecap="round"/>
+            <line x1="60" y1="20" x2="140" y2="20" stroke="#5F4ABB" stroke-width="8" stroke-linecap="round"/>
+            <line x1="140" y1="20" x2="140" y2="50" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round"/>
+            <circle id="h-head" cx="140" cy="68" r="18" fill="#FFD93D" stroke="#5F4ABB" stroke-width="4" class="h-part hidden"/>
+            <line id="h-body" x1="140" y1="86" x2="140" y2="150" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round" class="h-part hidden"/>
+            <line id="h-larm" x1="140" y1="105" x2="110" y2="135" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round" class="h-part hidden"/>
+            <line id="h-rarm" x1="140" y1="105" x2="170" y2="135" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round" class="h-part hidden"/>
+            <line id="h-lleg" x1="140" y1="150" x2="115" y2="190" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round" class="h-part hidden"/>
+            <line id="h-rleg" x1="140" y1="150" x2="165" y2="190" stroke="#5F4ABB" stroke-width="6" stroke-linecap="round" class="h-part hidden"/>
+            <circle id="h-eye1" cx="134" cy="65" r="2.5" fill="#5F4ABB" class="h-face hidden"/>
+            <circle id="h-eye2" cx="146" cy="65" r="2.5" fill="#5F4ABB" class="h-face hidden"/>
+            <path id="h-mouth" d="M134 74 Q140 79 146 74" stroke="#5F4ABB" stroke-width="2" fill="none" stroke-linecap="round" class="h-face hidden"/>
+            <path id="h-sad" d="M134 77 Q140 72 146 77" stroke="#E74C3C" stroke-width="2" fill="none" stroke-linecap="round" class="h-lose hidden"/>
+            <circle id="h-eye1x" cx="133" cy="64" r="3.5" fill="#E74C3C" class="h-lose hidden"/>
+            <circle id="h-eye2x" cx="147" cy="64" r="3.5" fill="#E74C3C" class="h-lose hidden"/>
+            <line x1="131" y1="62" x2="135" y2="66" stroke="white" stroke-width="1.5" class="h-lose hidden" id="xl1"/>
+            <line x1="135" y1="62" x2="131" y2="66" stroke="white" stroke-width="1.5" class="h-lose hidden" id="xl2"/>
+            <line x1="145" y1="62" x2="149" y2="66" stroke="white" stroke-width="1.5" class="h-lose hidden" id="xl3"/>
+            <line x1="149" y1="62" x2="145" y2="66" stroke="white" stroke-width="1.5" class="h-lose hidden" id="xl4"/>
+          </svg>
+          <div class="wrong-count">❌ <span id="wrongCount">0</span> / 6 wrong guesses</div>
+        </div>
+
+        <!-- Word + Hint Area -->
+        <div class="word-area">
+          <div class="hint-box" id="hintBox">
+            <span class="hint-icon">💡</span>
+            <span id="hintText">No hint set for this word.</span>
+          </div>
+          <div class="word-display" id="wordDisplay"></div>
+          <div class="hint-controls">
+            <button class="hint-btn" id="hintBtn" onclick="useHint()">
+              💡 Show Hint
+            </button>
+            <button class="new-word-btn" onclick="location.reload()">🔄 New Game</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keyboard -->
+      <div class="keyboard" id="keyboard"></div>
+    </div>
+  </div>
+
+  <!-- WIN OVERLAY -->
+  <div id="winOverlay" class="overlay hidden">
+    <div class="overlay-box win-box">
+      <div class="overlay-emoji">🎉</div>
+      <h2>Player 2 Wins!</h2>
+      <p id="winWordReveal"></p>
+      <div class="overlay-btns">
+        <button onclick="location.reload()" class="btn-play-again">🔄 Play Again</button>
+        <a href="index.html" class="btn-home">🏠 Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOSE OVERLAY -->
+  <div id="loseOverlay" class="overlay hidden">
+    <div class="overlay-box lose-box">
+      <div class="overlay-emoji">👑</div>
+      <h2>Player 1 Wins!</h2>
+      <p>Player 2 couldn't guess: <strong id="loseWordReveal"></strong></p>
+      <p id="loseHintReveal" class="lose-hint"></p>
+      <div class="overlay-btns">
+        <button onclick="location.reload()" class="btn-play-again">🔄 Play Again</button>
+        <a href="index.html" class="btn-home">🏠 Home</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="words.js"></script>
+  <script src="game.js"></script>
+  <script>
+    initMultiPlayer();
+  </script>
+</body>
+</html>
