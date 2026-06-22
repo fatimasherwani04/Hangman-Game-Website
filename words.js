@@ -19,6 +19,13 @@ const WORD_DATA = {
       { word: "CASSANDRA", hint: "A prophetess from Greek mythology" },
       { word: "THEODORE", hint: "A name meaning gift of God" },
       { word: "GABRIELLE", hint: "Feminine form of Gabriel" },
+      { word: "Rohan Jabeel", hint: "Famous Urdu Novel Character" },
+      { word: "Sheriyar", hint: "Muslim Boy Name" },
+      { word: "Babar Azam", hint: "Famous Pakistani Cricketer" },
+      { word: "Virat Kholi", hint: "World Wide Cricketer" },
+      { word: "Hania Amir", hint: "Dimple Girl" },
+      { word: "Hezlin", hint: "Girl Name Start with H" },
+
     ]
   },
   flowers: {
