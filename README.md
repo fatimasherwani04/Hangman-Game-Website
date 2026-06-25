@@ -28,7 +28,7 @@ A bright, playful, fully-featured Hangman game with Single Player and Two Player
 
 ## 🚀 Play Live
 
-👉 **[Play on GitHub Pages](https://YOUR_USERNAME.github.io/hangman-game)**
+👉 **[Play on GitHub Pages](https://fatimasherwani04.github.io/hangman-game/)**
 
 ## 📁 File Structure
 
